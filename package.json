@@ -1,0 +1,13 @@
+{
+  "name": "react-native-flipper-zustand",
+  "version": "1.0.0",
+  "description": "Show zustand state on flipper",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cmdominguez/react-native-flipper-zustand.git"
+  },
+  "main": "index.js",
+  "author": "Mariano Dominguez",
+  "license": "MIT",
+  "private": false
+}
