@@ -33,3 +33,22 @@ const useStore = create(
 	}))
 );
 ```
+
+### Typescript
+```typescript
+interface IBearStore {
+  bears: number;
+  increasePopulation: () => void;
+  removeAllBears: () => void;
+}
+
+type ZustandFlipper = (config: StateCreator<IBearStore>) => StateCreator<IBearStore>;
+
+const useStore = create(
+  (zustandFlipper as ZustandFlipper)((set) => ({
+    bears: 0,
+    increasePopulation: () => set((state) => ({ bears: state.bears + 1 }), false),
+    removeAllBears: () => set({ bears: 0 }, false),
+  })),
+);
+```
