@@ -1,6 +1,6 @@
 {
   "name": "react-native-flipper-zustand",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Show zustand state on flipper",
   "repository": {
     "type": "git",

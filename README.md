@@ -3,6 +3,8 @@
 
 This plugin allow see actions of zustand on react native.
 
+:warning:	**Please use zustand v4**
+
 ## Installation
 
 First install **zustandstore** on Flipper Plugin Manager.
@@ -25,6 +27,27 @@ import create from  'zustand';
 import zustandFlipper from 'react-native-flipper-zustand';
 
 const useStore = create(
+	zustandFlipper(set => ({
+	  bears: 0,
+	  // "set" now receives as the third parameter, the name of an action that will be shown in Flipper
+	  increasePopulation: () => set(state => ({ bears: state.bears + 1 }), false, 'increasePopulation'),
+	  removeAllBears: () => set({ bears: 0 }, false, 'removeAllBears')
+	}))
+);
+```
+
+### TypeScript
+```typescript
+import create from  'zustand';
+import zustandFlipper from 'react-native-flipper-zustand';
+
+type BearStoreT = {
+	bears: number;
+	increasePopulation: () => void;
+	removeAllBears:  () => void;
+}
+
+const useStore = create<BearStoreT>()(
 	zustandFlipper(set => ({
 	  bears: 0,
 	  // "set" now receives as the third parameter, the name of an action that will be shown in Flipper
