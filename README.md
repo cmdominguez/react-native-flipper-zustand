@@ -35,7 +35,6 @@ const useStore = create(
 	}))
 );
 ```
-
 ### TypeScript
 ```typescript
 import create from  'zustand';
@@ -56,3 +55,4 @@ const useStore = create<BearStoreT>()(
 	}))
 );
 ```
+
