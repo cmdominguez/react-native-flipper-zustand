@@ -1,10 +1,13 @@
 {
   "name": "react-native-flipper-zustand",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Show zustand state on flipper",
   "repository": {
     "type": "git",
     "url": "https://github.com/cmdominguez/react-native-flipper-zustand.git"
+  },
+  "dependencies": {
+    "zustand": "^4.3.9"
   },
   "main": "index.js",
   "author": "Mariano Dominguez",

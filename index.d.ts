@@ -1,57 +1,37 @@
-import {
-  Destroy,
-  GetState,
-  Mutate,
-  State,
-  StoreMutatorIdentifier,
-  Subscribe,
-} from "zustand";
+import type { StateCreator, StoreMutatorIdentifier } from 'zustand/vanilla';
+type Immer = <T, Mps extends [StoreMutatorIdentifier, unknown][] = [], Mcs extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [...Mps, ['zustand/flipper', never]], Mcs>) => StateCreator<T, Mps, [['zustand/flipper', never], ...Mcs]>;
+declare module 'zustand/vanilla' {
+    interface StoreMutators<S, A> {
+        ['zustand/flipper']: WithFlipper<S>;
+    }
+}
+type Write<T, U> = Omit<T, keyof U> & U;
 
-export declare type SetState<T extends State> = {
-  _(
-    partial: T | Partial<T> | ((state: T) => T | Partial<T>),
-    replace?: boolean | undefined,
-    name?: string
-  ): void;
-}["_"];
+type Cast<T, U> = T extends U ? T : U;
+type TakeTwo<T> = T extends {
+    length: 0;
+} ? [undefined, undefined] : T extends {
+    length: 1;
+} ? [...a0: Cast<T, unknown[]>, a1: undefined] : T extends {
+    length: 0 | 1;
+} ? [...a0: Cast<T, unknown[]>, a1: undefined] : T extends {
+    length: 2;
+} ? T : T extends {
+    length: 1 | 2;
+} ? T : T extends {
+    length: 0 | 1 | 2;
+} ? T : T extends [infer A0, infer A1, ...unknown[]] ? [A0, A1] : T extends [infer A0, (infer A1)?, ...unknown[]] ? [A0, A1?] : T extends [(infer A0)?, (infer A1)?, ...unknown[]] ? [A0?, A1?] : never;
 
-declare type StoreApi<T extends State> = {
-  setState: SetState<T>;
-  getState: GetState<T>;
-  subscribe: Subscribe<T>;
-  destroy: Destroy;
-};
+type WithFlipper<S> = Write<S, StoreImmer<S>>;
 
-declare type Get<T, K, F = never> = K extends keyof T ? T[K] : F;
-declare type StateCreator<
-  T extends State,
-  Mis extends [StoreMutatorIdentifier, unknown][] = [],
-  Mos extends [StoreMutatorIdentifier, unknown][] = [],
-  U = T
-> = ((
-  setState: Get<Mutate<StoreApi<T>, Mis>, "setState", undefined>,
-  getState: Get<Mutate<StoreApi<T>, Mis>, "getState", undefined>,
-  store: Mutate<StoreApi<T>, Mis>,
-  $$storeMutations: Mis
-) => U) & {
-  $$storeMutators?: Mos;
-};
+type StoreImmer<S> = S extends {
+    setState: (...a: infer Sa) => infer Sr;
+} ? {
+    setState<A extends string>(...a: [...a: TakeTwo<Sa>, actionName?: A]): Sr;
+} : never;
 
-type PopArgument<T extends (...a: never[]) => unknown> = T extends (
-  ...a: [...infer A, infer _]
-) => infer R
-  ? (...a: A) => R
-  : never;
 
-type Logger = <
-  T extends State,
-  Mps extends [StoreMutatorIdentifier, unknown][] = [],
-  Mcs extends [StoreMutatorIdentifier, unknown][] = []
->(
-  f: StateCreator<T, Mps, Mcs>,
-  name?: string
-) => StateCreator<T, Mps, Mcs>;
+export const zustandFlipper: Immer;
 
-declare const zustandFlipper: Logger;
 
 export default zustandFlipper;
