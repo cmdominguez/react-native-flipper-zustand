@@ -1,5 +1,5 @@
 import type { StateCreator, StoreMutatorIdentifier } from 'zustand/vanilla';
-type Immer = <T, Mps extends [StoreMutatorIdentifier, unknown][] = [], Mcs extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [...Mps, ['zustand/flipper', never]], Mcs>) => StateCreator<T, Mps, [['zustand/flipper', never], ...Mcs]>;
+type Immer = <T, Mps extends [StoreMutatorIdentifier, unknown][] = [], Mcs extends [StoreMutatorIdentifier, unknown][] = []>(initializer: StateCreator<T, [...Mps, ['zustand/flipper', never]], Mcs>, name?: string) => StateCreator<T, Mps, [['zustand/flipper', never], ...Mcs]>;
 declare module 'zustand/vanilla' {
     interface StoreMutators<S, A> {
         ['zustand/flipper']: WithFlipper<S>;
